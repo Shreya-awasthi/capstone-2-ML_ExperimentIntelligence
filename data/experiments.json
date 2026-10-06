@@ -1,0 +1,627 @@
+[
+  {
+    "id": "EXP-001",
+    "model": "churn_lr_v1",
+    "algorithm": "LogisticRegression",
+    "task": "binary_classification",
+    "train_acc": 0.82,
+    "val_acc": 0.81,
+    "test_acc": 0.8,
+    "roc_auc": 0.88,
+    "f1": 0.79,
+    "train_size": 120000,
+    "val_size": 15000,
+    "test_size": 15000,
+    "features": [
+      "recency",
+      "frequency",
+      "monetary",
+      "days_since_last_purchase"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [],
+    "outcome": "approved",
+    "deployment_date": "2024-01-15",
+    "notes": "Baseline model. Good generalisation.",
+    "tags": [
+      "churn",
+      "baseline",
+      "logistic"
+    ]
+  },
+  {
+    "id": "EXP-002",
+    "model": "churn_xgb_v1",
+    "algorithm": "XGBoost",
+    "task": "binary_classification",
+    "train_acc": 0.99,
+    "val_acc": 0.71,
+    "test_acc": 0.69,
+    "roc_auc": 0.84,
+    "f1": 0.72,
+    "train_size": 120000,
+    "val_size": 15000,
+    "test_size": 15000,
+    "features": [
+      "recency",
+      "frequency",
+      "monetary",
+      "future_purchase_flag"
+    ],
+    "leakage_risk": "high",
+    "bias_flags": [
+      "future_purchase_flag is a target leaker"
+    ],
+    "outcome": "rejected",
+    "deployment_date": null,
+    "notes": "Target leakage detected: future_purchase_flag derives from label.",
+    "tags": [
+      "churn",
+      "overfit",
+      "leakage",
+      "rejected"
+    ]
+  },
+  {
+    "id": "EXP-003",
+    "model": "fraud_rf_v2",
+    "algorithm": "RandomForest",
+    "task": "binary_classification",
+    "train_acc": 0.96,
+    "val_acc": 0.95,
+    "test_acc": 0.94,
+    "roc_auc": 0.98,
+    "f1": 0.91,
+    "train_size": 500000,
+    "val_size": 60000,
+    "test_size": 60000,
+    "features": [
+      "amount",
+      "merchant_category",
+      "hour",
+      "device_fingerprint",
+      "velocity_1h"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [
+      "underrepresented_region: APAC only 3% of training"
+    ],
+    "outcome": "approved_with_monitoring",
+    "deployment_date": "2024-03-01",
+    "notes": "Approved with APAC bias flag \u2014 additional monitoring required.",
+    "tags": [
+      "fraud",
+      "production",
+      "bias-flag"
+    ]
+  },
+  {
+    "id": "EXP-004",
+    "model": "ltv_dnn_v1",
+    "algorithm": "DNN",
+    "task": "regression",
+    "train_acc": 0.91,
+    "val_acc": 0.9,
+    "test_acc": 0.89,
+    "roc_auc": null,
+    "f1": null,
+    "train_size": 80000,
+    "val_size": 10000,
+    "test_size": 10000,
+    "features": [
+      "age",
+      "tenure",
+      "product_tier",
+      "avg_order_value",
+      "support_tickets"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [],
+    "outcome": "approved",
+    "deployment_date": "2024-04-10",
+    "notes": "Strong generalisation. No issues.",
+    "tags": [
+      "ltv",
+      "regression",
+      "production"
+    ]
+  },
+  {
+    "id": "EXP-005",
+    "model": "recommender_mf_v1",
+    "algorithm": "MatrixFactorization",
+    "task": "ranking",
+    "train_acc": 0.78,
+    "val_acc": 0.61,
+    "test_acc": 0.59,
+    "roc_auc": null,
+    "f1": null,
+    "train_size": 1000000,
+    "val_size": 100000,
+    "test_size": 100000,
+    "features": [
+      "user_id",
+      "item_id",
+      "interaction_type",
+      "timestamp"
+    ],
+    "leakage_risk": "medium",
+    "bias_flags": [
+      "cold_start: 8200 new users have 0 interactions"
+    ],
+    "outcome": "rejected",
+    "deployment_date": null,
+    "notes": "Significant val/test gap (val=0.61). Cold start not handled. Rejected.",
+    "tags": [
+      "recommender",
+      "overfit",
+      "cold-start",
+      "rejected"
+    ]
+  },
+  {
+    "id": "EXP-006",
+    "model": "nps_sentiment_v1",
+    "algorithm": "BERT-finetune",
+    "task": "sentiment_classification",
+    "train_acc": 0.94,
+    "val_acc": 0.93,
+    "test_acc": 0.92,
+    "roc_auc": 0.97,
+    "f1": 0.91,
+    "train_size": 50000,
+    "val_size": 6000,
+    "test_size": 6000,
+    "features": [
+      "survey_text",
+      "product_category",
+      "channel"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [],
+    "outcome": "approved",
+    "deployment_date": "2024-06-01",
+    "notes": "Good generalisation across product categories.",
+    "tags": [
+      "nlp",
+      "sentiment",
+      "bert"
+    ]
+  },
+  {
+    "id": "EXP-007",
+    "model": "demand_forecast_v3",
+    "algorithm": "LightGBM",
+    "task": "regression",
+    "train_acc": 0.88,
+    "val_acc": 0.87,
+    "test_acc": 0.51,
+    "roc_auc": null,
+    "f1": null,
+    "train_size": 365000,
+    "val_size": 30000,
+    "test_size": 30000,
+    "features": [
+      "day_of_week",
+      "month",
+      "holiday_flag",
+      "promo_flag",
+      "lag_7",
+      "lag_28"
+    ],
+    "leakage_risk": "high",
+    "bias_flags": [],
+    "outcome": "rejected",
+    "deployment_date": null,
+    "notes": "Val/test catastrophic gap (0.87 \u2192 0.51). Temporal leakage: lag features computed on full dataset before split.",
+    "tags": [
+      "forecast",
+      "temporal-leakage",
+      "rejected"
+    ]
+  },
+  {
+    "id": "EXP-008",
+    "model": "credit_score_v2",
+    "algorithm": "GradientBoosting",
+    "task": "binary_classification",
+    "train_acc": 0.87,
+    "val_acc": 0.86,
+    "test_acc": 0.85,
+    "roc_auc": 0.91,
+    "f1": 0.84,
+    "train_size": 200000,
+    "val_size": 25000,
+    "test_size": 25000,
+    "features": [
+      "income",
+      "employment_length",
+      "debt_to_income",
+      "payment_history",
+      "credit_utilisation"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [
+      "demographic_parity: approval rate Black applicants 18pp lower than White"
+    ],
+    "outcome": "rejected_bias",
+    "deployment_date": null,
+    "notes": "Rejected due to demographic parity violation \u2014 regulatory risk.",
+    "tags": [
+      "credit",
+      "fairness",
+      "bias",
+      "rejected",
+      "regulatory"
+    ]
+  },
+  {
+    "id": "EXP-009",
+    "model": "inventory_optim_v1",
+    "algorithm": "XGBoost",
+    "task": "regression",
+    "train_acc": 0.85,
+    "val_acc": 0.84,
+    "test_acc": 0.83,
+    "roc_auc": null,
+    "f1": null,
+    "train_size": 180000,
+    "val_size": 20000,
+    "test_size": 20000,
+    "features": [
+      "sku",
+      "warehouse",
+      "lead_time",
+      "safety_stock",
+      "demand_30d"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [],
+    "outcome": "approved",
+    "deployment_date": "2024-09-15",
+    "notes": "Strong results. Deployed to ops team.",
+    "tags": [
+      "inventory",
+      "xgboost",
+      "production"
+    ]
+  },
+  {
+    "id": "EXP-010",
+    "model": "price_elasticity_v1",
+    "algorithm": "LinearRegression",
+    "task": "regression",
+    "train_acc": 0.61,
+    "val_acc": 0.59,
+    "test_acc": 0.58,
+    "roc_auc": null,
+    "f1": null,
+    "train_size": 45000,
+    "val_size": 5000,
+    "test_size": 5000,
+    "features": [
+      "price",
+      "competitor_price",
+      "category",
+      "season"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [],
+    "outcome": "rejected_performance",
+    "deployment_date": null,
+    "notes": "Below performance threshold (target: val >= 0.70). Needs more features.",
+    "tags": [
+      "pricing",
+      "underperforming",
+      "rejected"
+    ]
+  },
+  {
+    "id": "EXP-011",
+    "model": "churn_xgb_v2",
+    "algorithm": "XGBoost",
+    "task": "binary_classification",
+    "train_acc": 0.89,
+    "val_acc": 0.88,
+    "test_acc": 0.87,
+    "roc_auc": 0.93,
+    "f1": 0.86,
+    "train_size": 150000,
+    "val_size": 18000,
+    "test_size": 18000,
+    "features": [
+      "recency",
+      "frequency",
+      "monetary",
+      "days_since_last_purchase",
+      "support_tickets"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [],
+    "outcome": "approved",
+    "deployment_date": "2024-11-01",
+    "notes": "Improved churn model. No leakage. Approved.",
+    "tags": [
+      "churn",
+      "xgboost",
+      "production"
+    ]
+  },
+  {
+    "id": "EXP-012",
+    "model": "anomaly_iforest_v1",
+    "algorithm": "IsolationForest",
+    "task": "anomaly_detection",
+    "train_acc": null,
+    "val_acc": 0.91,
+    "test_acc": 0.89,
+    "roc_auc": 0.94,
+    "f1": 0.88,
+    "train_size": 300000,
+    "val_size": 35000,
+    "test_size": 35000,
+    "features": [
+      "transaction_amount",
+      "frequency",
+      "merchant_type",
+      "geo_distance"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [],
+    "outcome": "approved",
+    "deployment_date": "2024-12-15",
+    "notes": "Unsupervised \u2014 no train_acc. Strong recall on fraud. Approved.",
+    "tags": [
+      "anomaly",
+      "unsupervised",
+      "production"
+    ]
+  },
+  {
+    "id": "EXP-013",
+    "model": "text_classifier_v1",
+    "algorithm": "DistilBERT",
+    "task": "multi_class_classification",
+    "train_acc": 0.95,
+    "val_acc": 0.94,
+    "test_acc": 0.93,
+    "roc_auc": 0.98,
+    "f1": 0.93,
+    "train_size": 80000,
+    "val_size": 10000,
+    "test_size": 10000,
+    "features": [
+      "ticket_text",
+      "category_label"
+    ],
+    "leakage_risk": "low",
+    "bias_flags": [
+      "category_label was preprocessed on full dataset \u2014 minor leakage risk"
+    ],
+    "outcome": "approved_with_monitoring",
+    "deployment_date": "2025-01-10",
+    "notes": "Minor preprocessing leakage. Approved with note to fix in v2.",
+    "tags": [
+      "nlp",
+      "classification",
+      "monitoring"
+    ]
+  },
+  {
+    "id": "EXP-014",
+    "model": "survival_model_v1",
+    "algorithm": "CoxPH",
+    "task": "survival_analysis",
+    "train_acc": null,
+    "val_acc": 0.77,
+    "test_acc": 0.76,
+    "roc_auc": 0.83,
+    "f1": null,
+    "train_size": 60000,
+    "val_size": 8000,
+    "test_size": 8000,
+    "features": [
+      "age",
+      "product_tier",
+      "tenure",
+      "payment_method"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [],
+    "outcome": "approved",
+    "deployment_date": "2025-02-01",
+    "notes": "Survival model \u2014 C-index 0.77. Approved for churn timing prediction.",
+    "tags": [
+      "survival",
+      "churn",
+      "timing"
+    ]
+  },
+  {
+    "id": "EXP-015",
+    "model": "ab_test_uplift_v1",
+    "algorithm": "UpliftForest",
+    "task": "uplift_modelling",
+    "train_acc": null,
+    "val_acc": 0.62,
+    "test_acc": 0.61,
+    "roc_auc": null,
+    "f1": null,
+    "train_size": 40000,
+    "val_size": 5000,
+    "test_size": 5000,
+    "features": [
+      "treatment_flag",
+      "user_segment",
+      "channel",
+      "propensity_score"
+    ],
+    "leakage_risk": "high",
+    "bias_flags": [
+      "propensity_score computed post-treatment \u2014 selection bias"
+    ],
+    "outcome": "rejected",
+    "deployment_date": null,
+    "notes": "propensity_score is post-treatment \u2014 cannot be used as feature.",
+    "tags": [
+      "uplift",
+      "causal",
+      "leakage",
+      "rejected"
+    ]
+  },
+  {
+    "id": "EXP-016",
+    "model": "forecast_seasonal_v1",
+    "algorithm": "Prophet",
+    "task": "time_series",
+    "train_acc": null,
+    "val_acc": 0.84,
+    "test_acc": 0.83,
+    "roc_auc": null,
+    "f1": null,
+    "train_size": 730,
+    "val_size": 90,
+    "test_size": 90,
+    "features": [
+      "date",
+      "sales",
+      "holiday",
+      "promo"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [],
+    "outcome": "approved",
+    "deployment_date": "2025-03-01",
+    "notes": "Seasonal decomposition works well. MAPE=8.2%. Approved.",
+    "tags": [
+      "forecast",
+      "prophet",
+      "seasonal",
+      "production"
+    ]
+  },
+  {
+    "id": "EXP-017",
+    "model": "embeddings_v1",
+    "algorithm": "sentence-transformers",
+    "task": "embedding",
+    "train_acc": null,
+    "val_acc": 0.89,
+    "test_acc": 0.88,
+    "roc_auc": null,
+    "f1": null,
+    "train_size": 500000,
+    "val_size": 50000,
+    "test_size": 50000,
+    "features": [
+      "document_text",
+      "document_type"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [
+      "domain_coverage: legal docs only 2% of corpus"
+    ],
+    "outcome": "approved_with_monitoring",
+    "deployment_date": "2025-03-15",
+    "notes": "Deployed for semantic search. Legal domain underrepresented.",
+    "tags": [
+      "embeddings",
+      "rag",
+      "domain-bias"
+    ]
+  },
+  {
+    "id": "EXP-018",
+    "model": "causal_impact_v1",
+    "algorithm": "CausalImpact",
+    "task": "causal_inference",
+    "train_acc": null,
+    "val_acc": 0.71,
+    "test_acc": 0.69,
+    "roc_auc": null,
+    "f1": null,
+    "train_size": 365,
+    "val_size": 30,
+    "test_size": 30,
+    "features": [
+      "daily_revenue",
+      "intervention_flag",
+      "control_market"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [
+      "small_test_size: 30 days insufficient for statistical power"
+    ],
+    "outcome": "rejected_stats",
+    "deployment_date": null,
+    "notes": "Test set too small for reliable causal estimates. Extend observation window.",
+    "tags": [
+      "causal",
+      "underpowered",
+      "rejected"
+    ]
+  },
+  {
+    "id": "EXP-019",
+    "model": "rl_pricing_v1",
+    "algorithm": "PPO",
+    "task": "reinforcement_learning",
+    "train_acc": null,
+    "val_acc": 0.73,
+    "test_acc": 0.71,
+    "roc_auc": null,
+    "f1": null,
+    "train_size": 1000000,
+    "val_size": null,
+    "test_size": 100000,
+    "features": [
+      "state_price",
+      "competitor_price",
+      "inventory_level",
+      "demand_signal"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [
+      "simulation_gap: training env != production distribution"
+    ],
+    "outcome": "approved_limited",
+    "deployment_date": "2025-04-01",
+    "notes": "Deployed to 5% of traffic only. Simulation gap requires live monitoring.",
+    "tags": [
+      "rl",
+      "pricing",
+      "simulation",
+      "limited"
+    ]
+  },
+  {
+    "id": "EXP-020",
+    "model": "multimodal_v1",
+    "algorithm": "CLIP-finetune",
+    "task": "image_text_matching",
+    "train_acc": 0.91,
+    "val_acc": 0.9,
+    "test_acc": 0.89,
+    "roc_auc": 0.96,
+    "f1": 0.89,
+    "train_size": 200000,
+    "val_size": 25000,
+    "test_size": 25000,
+    "features": [
+      "image_embedding",
+      "product_title",
+      "category"
+    ],
+    "leakage_risk": "none",
+    "bias_flags": [],
+    "outcome": "approved",
+    "deployment_date": "2025-05-01",
+    "notes": "Strong multimodal results. Deployed for visual search.",
+    "tags": [
+      "multimodal",
+      "clip",
+      "production"
+    ]
+  }
+]

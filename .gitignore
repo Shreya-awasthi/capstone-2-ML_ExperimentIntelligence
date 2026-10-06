@@ -1,0 +1,21 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# VS Code
+.vscode/
+
+# Environment variables
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+chroma_store/

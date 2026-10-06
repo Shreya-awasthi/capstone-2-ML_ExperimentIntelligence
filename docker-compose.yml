@@ -1,0 +1,58 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ml-experiment-review:latest
+    container_name: ml-experiment-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ml-experiment-review:latest
+    container_name: ml-experiment-ui
+    command: ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    environment:
+      - API_BASE_URL=http://api:8000   # inside Docker, talk to the api service by name
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mcp_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ml-experiment-review:latest
+    container_name: ml-experiment-mcp
+    command: ["python", "mcp_server/server.py"]
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped

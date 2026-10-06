@@ -1,0 +1,92 @@
+[
+  {
+    "id": "MDL-001",
+    "name": "churn_lr_v1",
+    "status": "production",
+    "version": "1.0",
+    "experiment_id": "EXP-001",
+    "deployed_by": "ds-team@co.com",
+    "sla_latency_ms": 50
+  },
+  {
+    "id": "MDL-002",
+    "name": "churn_xgb_v2",
+    "status": "production",
+    "version": "2.0",
+    "experiment_id": "EXP-011",
+    "deployed_by": "ds-team@co.com",
+    "sla_latency_ms": 30
+  },
+  {
+    "id": "MDL-003",
+    "name": "fraud_rf_v2",
+    "status": "production",
+    "version": "2.0",
+    "experiment_id": "EXP-003",
+    "deployed_by": "risk-eng@co.com",
+    "sla_latency_ms": 20
+  },
+  {
+    "id": "MDL-004",
+    "name": "ltv_dnn_v1",
+    "status": "production",
+    "version": "1.0",
+    "experiment_id": "EXP-004",
+    "deployed_by": "ds-team@co.com",
+    "sla_latency_ms": 100
+  },
+  {
+    "id": "MDL-005",
+    "name": "nps_sentiment_v1",
+    "status": "production",
+    "version": "1.0",
+    "experiment_id": "EXP-006",
+    "deployed_by": "ds-team@co.com",
+    "sla_latency_ms": 200
+  },
+  {
+    "id": "MDL-006",
+    "name": "inventory_optim_v1",
+    "status": "production",
+    "version": "1.0",
+    "experiment_id": "EXP-009",
+    "deployed_by": "ops-eng@co.com",
+    "sla_latency_ms": 80
+  },
+  {
+    "id": "MDL-007",
+    "name": "anomaly_iforest_v1",
+    "status": "production",
+    "version": "1.0",
+    "experiment_id": "EXP-012",
+    "deployed_by": "risk-eng@co.com",
+    "sla_latency_ms": 15
+  },
+  {
+    "id": "MDL-008",
+    "name": "forecast_seasonal_v1",
+    "status": "production",
+    "version": "1.0",
+    "experiment_id": "EXP-016",
+    "deployed_by": "ds-team@co.com",
+    "sla_latency_ms": 500
+  },
+  {
+    "id": "MDL-009",
+    "name": "embeddings_v1",
+    "status": "production",
+    "version": "1.0",
+    "experiment_id": "EXP-017",
+    "deployed_by": "platform@co.com",
+    "sla_latency_ms": 50
+  },
+  {
+    "id": "MDL-010",
+    "name": "rl_pricing_v1",
+    "status": "limited",
+    "version": "1.0",
+    "experiment_id": "EXP-019",
+    "deployed_by": "pricing@co.com",
+    "sla_latency_ms": 10
+  }
+]
